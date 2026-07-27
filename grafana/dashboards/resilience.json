@@ -1,0 +1,31 @@
+{
+  "title": "Payment Resilience Dashboard",
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Circuit Breaker State",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 0 },
+      "targets": [{ "expr": "payment_circuit_state" }],
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "type": "value", "options": { "0": { "text": "CLOSED", "color": "green" }, "1": { "text": "HALF-OPEN", "color": "yellow" }, "2": { "text": "OPEN", "color": "red" } } }
+          ]
+        }
+      }
+    },
+    {
+      "type": "timeseries",
+      "title": "Payment Retries",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 0 },
+      "targets": [{ "expr": "rate(payment_retries_total[1m])" }]
+    },
+    {
+      "type": "stat",
+      "title": "DLQ Depth",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 0 },
+      "targets": [{ "expr": "payment_dlq_depth" }]
+    }
+  ],
+  "schemaVersion": 38
+}
