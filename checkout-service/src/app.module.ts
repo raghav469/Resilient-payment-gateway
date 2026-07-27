@@ -14,6 +14,7 @@ import { PrometheusModule } from '@willsoto/nestjs-prometheus';
             url: process.env.DATABASE_URL,
             autoLoadEntities: true,
             synchronize: true, // For demo purposes
+            ssl: { rejectUnauthorized: false },
           };
         }
         return {
