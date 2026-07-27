@@ -8,7 +8,8 @@ export function AdminPanel() {
   useEffect(() => {
     const fetchState = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/admin/circuit-state');
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3003';
+        const response = await axios.get(`${apiUrl}/admin/circuit-state`);
         setCircuitState(response.data);
       } catch (error) {
         // fail silently for polling
