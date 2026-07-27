@@ -21,10 +21,21 @@ export class DlqService implements OnModuleInit, OnModuleDestroy {
     private readonly httpService: HttpService,
     @InjectMetric('payment_dlq_depth') public dlqDepthGauge: Gauge<string>,
   ) {
-    this.kafka = new Kafka({
+    const kafkaConfig: any = {
       clientId: 'checkout-service',
       brokers: [process.env.KAFKA_BROKER || 'localhost:9092'],
-    });
+    };
+
+    if (process.env.KAFKA_USERNAME && process.env.KAFKA_PASSWORD) {
+      kafkaConfig.sasl = {
+        mechanism: 'scram-sha-256',
+        username: process.env.KAFKA_USERNAME,
+        password: process.env.KAFKA_PASSWORD,
+      };
+      kafkaConfig.ssl = true;
+    }
+
+    this.kafka = new Kafka(kafkaConfig);
     this.producer = this.kafka.producer();
     this.consumer = this.kafka.consumer({ groupId: 'dlq-replay-group' });
   }

@@ -29,6 +29,12 @@ import { makeGaugeProvider, makeCounterProvider } from '@willsoto/nestjs-prometh
     {
       provide: 'REDIS_CLIENT',
       useFactory: () => {
+        if (process.env.REDIS_URL) {
+          // Use full connection string (e.g., Upstash)
+          // ioredis automatically handles TLS if the URL is rediss://
+          const url = process.env.REDIS_URL.replace('redis://', 'rediss://');
+          return new Redis(url, { family: 0 });
+        }
         return new Redis({ host: process.env.REDIS_HOST || 'localhost', port: 6379 });
       },
     },
