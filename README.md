@@ -50,16 +50,3 @@ graph TD
    - The circuit breaker transitions back to `closed` state automatically.
 
 ---
-
-## 🎤 Interview Question Answer
-
-> **Question**: "A third-party API you depend on goes down for 3 hours. How would you redesign this so the entire product doesn't return 500s the whole time?"
-
-**Answer**:
-When relying on volatile external dependencies, returning immediate 500 errors to users leads to a poor UX and lost revenue. In this project, I redesigned a basic checkout flow using five layered resilience patterns to survive extended outages seamlessly:
-
-1. **Circuit Breaker & Retry (Opossum)**: Instead of overwhelming the failing provider with doomed requests, we retry transient errors with exponential backoff and jitter. If failures persist (e.g., 50% failure rate), the circuit trips open, immediately fast-failing to protect both our system threads and the downstream service, preventing cascading failures.
-2. **Cache-based Fallback (Redis)**: When the circuit is open, instead of throwing a 500, we intercept the failure and attempt Graceful Degradation. We retrieve the most recent successful response from a fast Redis cache to provide stale but usable data (e.g., cached pricing), allowing the user to complete their action in a degraded state.
-3. **Dead Letter Queue - DLQ (Kafka)**: If the fallback data isn't available, we still avoid a 500. We accept the request, respond with a 202 Accepted ("Queued"), and publish the transaction to a Kafka DLQ. A background consumer continuously monitors the queue and replays the failed transactions against the API once it eventually recovers.
-
-This layered approach guarantees high availability. During a 3-hour downtime, users experience slightly slower transactions (due to initial retries) or degraded features, but the core business flow remains operational.
