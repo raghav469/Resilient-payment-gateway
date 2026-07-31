@@ -16,21 +16,6 @@ graph TD
     Prom[Prometheus] --> |Scrape /metrics| CS
     Grafana[Grafana] --> |Visualize| Prom
 ```
-
-## 🚀 Setup Steps
-
-1. **Prerequisites**: Ensure you have Docker and Docker Compose installed.
-2. **Start the Stack**: Run the following command from the root directory:
-   ```bash
-   docker compose up --build
-   ```
-   This will spin up Postgres, Redis, Kafka, Zookeeper, Prometheus, Grafana, and the 3 custom applications.
-3. **Access Services**:
-   - **Checkout UI**: `http://localhost:5173`
-   - **Checkout API**: `http://localhost:3000`
-   - **Mock Provider**: `http://localhost:3002`
-   - **Grafana Dashboard**: `http://localhost:3001` (Pre-provisioned dashboard: "Payment Resilience Dashboard")
-
 ## 💥 How to Trigger the Failure Demo
 
 1. **Happy Path**: Open the Checkout UI, enter an amount, and click "Pay Now". You will see a "Payment Confirmed" success message.
