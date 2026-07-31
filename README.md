@@ -16,6 +16,17 @@ graph TD
     Prom[Prometheus] --> |Scrape /metrics| CS
     Grafana[Grafana] --> |Visualize| Prom
 ```
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React (Vite)
+- **Backend**: NestJS (TypeScript), Express.js (Node.js)
+- **Databases & Caching**: PostgreSQL, Redis
+- **Message Broker**: Apache Kafka, Zookeeper
+- **Monitoring & Observability**: Prometheus, Grafana
+- **Infrastructure & Libraries**: Docker, Docker Compose, Opossum (Circuit Breaker)
+
+  
 ## 💥 How to Trigger the Failure Demo
 
 1. **Happy Path**: Open the Checkout UI, enter an amount, and click "Pay Now". You will see a "Payment Confirmed" success message.
